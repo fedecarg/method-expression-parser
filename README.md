@@ -2,7 +2,7 @@
 
 Most ORMs support the concept of dynamic finders. A dynamic finder looks like a normal method invocation, but the method itself doesn't exist, instead, it's generated dynamically and processed via another method at runtime. MethodExpressionParser is a PHP library for parsing method expressions. It's designed to quickly and easily parse method expressions and construct conditions based on attribute names and arguments.
 
-# Method Expressions
+**Method Expressions**
 
 GORM, Grails ORM library, introduces the concept of dynamic method expressions. A method expression is made up of the prefix such as "findBy" followed by an expression that combines one or more properties. Grails takes advantage of Groovy features to provide dynamic methods:
 
