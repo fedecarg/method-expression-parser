@@ -265,15 +265,17 @@ array
 ## Usage
 
 ```
-class EntityRepository
+class ActiveRecord
 {
     private $methodExpressionParser;
 
-    // Return a single instance of MethodExpressionParser
     public function getMethodExpressionParser() {
+        if (! isset($this->methodExpressionParser)) {
+            $this->methodExpressionParser = new MethodExpressionParser();
+        }
+        return $this->methodExpressionParser;
     }
 
-    // Finder methods
     public function findBy($conditions) {
         var_dump($conditions);
     }
@@ -290,7 +292,7 @@ class EntityRepository
                 $conditions = $result[$finderMethod];
             } catch (MethodExpressionParserException $e) {
                 $message = sprintf('%s: %s()', $e->getMessage(), $method);
-                throw new EntityRepositoryException($message);
+                throw new Exception($message);
             }
             return $this->$finderMethod($conditions);
         }
@@ -306,17 +308,17 @@ class EntityRepository
 PHP doesn't allow you to define methods dynamically, this means that every time you invoke a finder method the parser has to search, extract and map all the attribute names and expressions. To avoid introducing this performance overhead you can cache the attribute names. For example:
 
 ```
-class EntityRepository
+class ActiveRecord
 {
     private $methodExpressionParser;
     private $classMetadata;
 
-    // Return a single instance of MethodExpressionParser
     public function getMethodExpressionParser() {
+        //...
     }
 
-    // Return a single instance of ClassMetadata
     public function getClassMetadata() {
+        //...
     }
 
     // Invoke finder methods
@@ -337,7 +339,7 @@ class EntityRepository
                 }
             } catch (MethodExpressionParserException $e) {
                 $message = sprintf('%s: %s()', $e->getMessage(), $method);
-                throw new EntityRepositoryException($message);
+                throw new Exception($message);
             }
             return $this->$finderMethod($conditions);
         }
