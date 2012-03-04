@@ -303,7 +303,7 @@ class ActiveRecord
 }
 ```
 
-## Performance
+### Performance
 
 PHP doesn't allow you to define methods dynamically, this means that every time you invoke a finder method the parser has to search, extract and map all the attribute names and expressions. To avoid introducing this performance overhead you can cache the attribute names. For example:
 
