@@ -365,5 +365,5 @@ class EqualsExpression extends Expression {
 
 ## License
 
-Copyright (c) 2010, Federico Cargnelutti. All rights reserved. 
-New BSD License http://www.opensource.org/licenses/bsd-license.php
+* Copyright (c) 2010, Federico Cargnelutti. All rights reserved. 
+* New BSD License http://www.opensource.org/licenses/bsd-license.php
