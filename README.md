@@ -6,22 +6,30 @@ Most ORMs support the concept of dynamic finders. A dynamic finder looks like a 
 
 GORM, Grails ORM library, introduces the concept of dynamic method expressions. A method expression is made up of the prefix such as "findBy" followed by an expression that combines one or more properties. Grails takes advantage of Groovy features to provide dynamic methods:
 
-```findByTitle("Example")
-findByTitleLike("Exa%")```
+```
+findByTitle("Example")
+findByTitleLike("Exa%")
+```
 
 Method expressions can also use a boolean operator to combine two criteria:
 
-```findAllByTitleLikeAndDateGreaterThan("Exampl%", '2010-03-23')```
+```
+findAllByTitleLikeAndDateGreaterThan("Exampl%", '2010-03-23')
+```
 
 In this case we are using AND in the middle of the query to make sure both conditions are satisfied, but you could equally use OR:
 
-```findAllByTitleLikeOrDateGreaterThan("Exampl%", '2010-03-23')```
+```
+findAllByTitleLikeOrDateGreaterThan("Exampl%", '2010-03-23')
+```
 
 ## Parsing Method Expressions
 
 **Description**
 
-```[finderMethod]([attribute][expression][logicalOperator])?[attribute][expression]```
+```
+[finderMethod]([attribute][expression][logicalOperator])?[attribute][expression]
+```
 
 **Expressions**
 
@@ -36,7 +44,8 @@ In this case we are using AND in the middle of the query to make sure both condi
 
 ## Examples
 
-```findByTitleAndDate('Example', date('Y-m-d'));
+```
+findByTitleAndDate('Example', date('Y-m-d'));
 SELECT * FROM book WHERE title = ? AND date = ?
 
 findByTitleOrDate('Example', date('Y-m-d'))
@@ -52,13 +61,19 @@ findByTitleLikeAndDateNotNull('Examp%')
 SELECT * FROM book WHERE title LIKE ? AND date NOT NULL
 
 findByIdOrTitleAndDateNotNull(1, 'Example')
-SELECT * FROM book WHERE (id = ?) OR (title = ? AND date NOT NULL)```
+SELECT * FROM book WHERE (id = ?) OR (title = ? AND date NOT NULL)
+```
 
 ### Example 1
 
-```findByTitleAndDate('Example', date('Y-m-d'));```
+```
+findByTitleAndDate('Example', date('Y-m-d'));
+```
+
 Outputs:
-```array
+
+```
+array
   0 =>
     array
       0 =>
@@ -74,13 +89,19 @@ Outputs:
           'expression' => string 'Equals'
           'format' => string '%s = ?'
           'placeholders' => int 1
-          'argument' => string '2010-03-22'```
+          'argument' => string '2010-03-22'
+```
 
 ### Example 2
 
-```findByTitleOrDate('Example', date('Y-m-d'));```
+```
+findByTitleOrDate('Example', date('Y-m-d'));
+```
+
 Outputs:
-```array
+
+```
+array
   0 =>
     array
       0 =>
@@ -98,13 +119,19 @@ Outputs:
           'expression' => string 'Equals'
           'format' => string '%s = ?'
           'placeholders' => int 1
-          'argument' => string '2010-03-22'```
+          'argument' => string '2010-03-22'
+```
 
 ### Example 3
 
-```findByPublisherOrTitleAndDate('Name', 'Example', date('Y-m-d'));```
+```
+findByPublisherOrTitleAndDate('Name', 'Example', date('Y-m-d'));
+```
+
 Outputs:
-```array
+
+```
+array
   0 =>
     array
       0 =>
@@ -129,13 +156,19 @@ Outputs:
           'expression' => string 'Equals'
           'format' => string '%s = ?'
           'placeholders' => int 1
-          'argument' => string '2010-03-22'```
+          'argument' => string '2010-03-22'
+```
 
 ### Example 4
 
-```findByPublisherInAndTitle(array('Name1', 'Name2'), 'Example');```
+```
+findByPublisherInAndTitle(array('Name1', 'Name2'), 'Example');
+```
+
 Outputs:
-```array
+
+```
+array
   0 =>
     array
       0 =>
@@ -154,13 +187,19 @@ Outputs:
           'expression' => string 'Equals'
           'format' => string '%s = ?'
           'placeholders' => int 1
-          'argument' => string 'Example'```
+          'argument' => string 'Example'
+```
 
 ### Example 5
 
-```findByTitleLikeAndDateNotNull('Examp%');```
+```
+findByTitleLikeAndDateNotNull('Examp%');
+```
+
 Outputs:
-```array
+
+```
+array
   0 =>
     array
       0 =>
@@ -176,13 +215,19 @@ Outputs:
           'expression' => string 'NotNull'
           'format' => string '%s IS NOT NULL'
           'placeholders' => int 0
-          'argument' => null```
+          'argument' => null
+```
 
 ### Example 6
 
-```findByTitleAndPublisherNameOrTitleAndPublisherName('Title', 'Name1', 'Title', 'Name2');```
+```
+findByTitleAndPublisherNameOrTitleAndPublisherName('Title', 'Name1', 'Title', 'Name2');
+```
+
 Outputs:
-```array
+
+```
+array
   0 =>
     array
       0 =>
@@ -214,11 +259,13 @@ Outputs:
           'expression' => string 'Equals'
           'format' => string '%s = ?'
           'placeholders' => int 1
-          'argument' => string 'Name2'```
+          'argument' => string 'Name2'
+```
 
 ## Usage
 
-```class EntityRepository
+```
+class EntityRepository
 {
     private $methodExpressionParser;
 
@@ -251,13 +298,15 @@ Outputs:
         $message = 'Invalid method call: ' . __METHOD__;
         throw new BadMethodCallException($message);
     }
-}```
+}
+```
 
 ## Performance
 
 PHP doesn't allow you to define methods dynamically, this means that every time you invoke a finder method the parser has to search, extract and map all the attribute names and expressions. To avoid introducing this performance overhead you can cache the attribute names. For example:
 
-```class EntityRepository
+```
+class EntityRepository
 {
     private $methodExpressionParser;
     private $classMetadata;
@@ -296,7 +345,8 @@ PHP doesn't allow you to define methods dynamically, this means that every time 
         $message = 'Invalid method call: ' . __METHOD__;
         throw new BadMethodCallException($message);
     }
-}```
+}
+```
 
 The Expression objects are lazy-loaded, depending on the expressions found in the method name.
 
@@ -304,10 +354,12 @@ The Expression objects are lazy-loaded, depending on the expressions found in th
 
 The MethodExpressionParser class was designed with extensibility in mind, allowing you to add new Expressions to the library.
 
-```abstract class Expression {
+```
+abstract class Expression {
 }
 class EqualsExpression extends Expression {
-}```
+}
+```
 
 ## License
 
