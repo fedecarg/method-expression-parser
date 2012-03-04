@@ -11,7 +11,7 @@ findByTitle("Example")
 findByTitleLike("Exa%")
 ```
 
-Method expressions can also use a boolean operator to combine two criteria:
+Method expressions can also use a boolean operator to combine two criteria: 
 
 ```
 findAllByTitleLikeAndDateGreaterThan("Exampl%", '2010-03-23')
